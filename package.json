@@ -1,0 +1,27 @@
+{
+  "name": "ngmp",
+  "version": "1.0.0",
+  "description": "ngmp training app",
+  "main": "index.js",
+  "scripts": {
+    "start": "babel-node server/index.js --presets es2015,stage-2",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JutIgor/NGMP.git"
+  },
+  "author": "Ihar Yachnik",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JutIgor/NGMP/issues"
+  },
+  "homepage": "https://github.com/JutIgor/NGMP#readme",
+  "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "babel-register": "^6.26.0"
+  }
+}
