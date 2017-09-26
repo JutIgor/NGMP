@@ -2,10 +2,10 @@ import fs from 'fs';
 import pathModule from 'path';
 import { promisify } from 'util';
 
+import emitter from './emitter';
+
 const readDir = promisify(fs.readdir);
 const stat = promisify(fs.stat);
-
-import emitter from './emitter';
 
 class Dirwatcher {
   constructor() {
@@ -46,7 +46,7 @@ class Dirwatcher {
 
   getLastUpdateTimeAsync(path) {
     return stat(path)
-      .then(({ mtimeMs }) => ({ path, lastUpdateTime: mtimeMs }))
+      .then(({ mtimeMs }) => ({ path, lastUpdateTime: mtimeMs }));
   }
 
   getFilePath(dirPath, filePath) {
