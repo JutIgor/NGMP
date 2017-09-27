@@ -5,6 +5,12 @@ import { User, Product } from './models';
 import Dirwatcher from './dirwatcher';
 import Importer from './importer';
 
+const {
+  delay,
+  directory,
+  name,
+} = config;
+
 // console.log(config.name);
 // const user = new User();
 // const product = new Product();
@@ -12,4 +18,4 @@ import Importer from './importer';
 const dirwatcher = new Dirwatcher();
 const importer = new Importer();
 
-dirwatcher.watch(path.resolve(__dirname, config.directory), 2000);
+dirwatcher.watch(path.resolve(__dirname, directory), delay);
