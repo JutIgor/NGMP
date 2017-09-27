@@ -12,5 +12,4 @@ import Importer from './importer';
 const dirwatcher = new Dirwatcher();
 const importer = new Importer();
 
-dirwatcher.watch(path.resolve(__dirname, 'data'), 2000);
-
+dirwatcher.watch(path.resolve(__dirname, config.directory), 2000);

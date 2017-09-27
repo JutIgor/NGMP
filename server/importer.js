@@ -7,16 +7,10 @@ const readFile = promisify(fs.readFile);
 
 class Importer {
   constructor(isSync) {
-    emitter.on('dirwatcher:changed', path => this.import(path, isSync));
+    emitter.on('dirwatcher:changed', path => isSync ? this.importSync(path) : this.import(path));
   }
 
-  import(path, sync) {
-    if (sync) return this.importSync(path);
-
-    return this.importAsync(path);
-  }
-
-  importAsync(path) {
+  import(path) {
     readFile(path)
       .then(data => (console.log(`async import ${path} finished!`), this.csvToJson(data)))
       .catch(err => console.error(err));
