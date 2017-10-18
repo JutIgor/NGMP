@@ -1,5 +1,16 @@
 {
   "name": "NodeMP HW App",
   "directory": "data",
-  "delay": 2000
+  "delay": 2000,
+  "streams": {
+    "CONSTANTS": {
+      "TRANSFORM": "transform",
+      "IO": "io",
+      "TRANSFORM_FILE": "transform-file",
+      "BUNDLE_CSS": "bundle-css"
+    },
+    "DEFAULT_BUNDLE_NAME": "bundle.css",
+    "EXTENSION": ".css",
+    "REQUEST_URL": "https://www.epam.com/etc/clientlibs/foundation/main.min.fc69c13add6eae57cd247a91c7e26a15.css"
+  }
 }
