@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const promisify = require('util').promisify;
+const { promisify } = require('util');
 
 const parser = require('nomnom');
 const through = require('through2');
@@ -8,6 +8,15 @@ const split = require('split');
 const request = require('request');
 
 const readDir = promisify(fs.readdir);
+
+const {
+  streams: {
+    CONSTANTS,
+    DEFAULT_BUNDLE_NAME,
+    EXTENSION,
+    REQUEST_URL,
+  },
+} = require('../config/config.json');
 
 function run() {
   const { action, file, path } = parser
@@ -28,16 +37,16 @@ function run() {
 
   if (action) {
     switch (action) {
-      case 'transform':
+      case CONSTANTS.TRANSFORM:
         transform();
         break;
-      case 'io':
+      case CONSTANTS.IO:
         inputOutput(file);
         break;
-      case 'transform-file':
+      case CONSTANTS.TRANSFORM_FILE:
         transformFile(file);
         break;
-      case 'bundle-css':
+      case CONSTANTS.BUNDLE_CSS:
         bundle(path);
         break;
     }
@@ -86,29 +95,14 @@ function bundle(dirPath) {
   if (!dirPath) return help('path');
 
   const converter = () => through(function (chunk, enc, cb) {
-    console.log(chunk.toString());
     this.push(`${chunk.toString()}\n`);
 
     cb();
   });
 
-  const flags = (() => {
-    const flags = { flags: 'a' };
-    let first = true;
-
-    return () => {
-      if (first) {
-        first = false;
-        return null;
-      } else {
-        return flags;
-      }
-    }
-  })();
-
   function next(source, converter, flags) {
     return new Promise((res, rej) => {
-      const dest = fs.createWriteStream('bundle.css', flags);
+      const dest = fs.createWriteStream(DEFAULT_BUNDLE_NAME, flags);
 
       source.on('end', () => {
         res();
@@ -120,13 +114,15 @@ function bundle(dirPath) {
     });
   }
 
+  const flags = getFlags();
+
   readDir(dirPath)
     .then(files => {
       return files
-        .filter(file => path.extname(file) === '.css')
+        .filter(file => path.extname(file) === EXTENSION)
         .map(file => getFilePath(dirPath, file))
         .map(file => fs.createReadStream(file))
-        .concat(request('https://www.epam.com/etc/clientlibs/foundation/main.min.fc69c13add6eae57cd247a91c7e26a15.css'));
+        .concat(request(REQUEST_URL));
     })
     .then(streams => {
       streams
@@ -138,10 +134,12 @@ function getJsonConverter() {
   let first = true;
 
   return through(function (chunk, enc, cb) {
-    first && this.push('[');
-    !first && this.push(',');
-
-    first && (first = false);
+    if (first) {
+      this.push('[');
+      first = false;
+    } else {
+      this.push(',');
+    }
 
     this.push(csvToJson(chunk.toString()));
 
@@ -163,8 +161,29 @@ function getFilePath(dirPath, filePath) {
   return path.resolve(dirPath, filePath);
 }
 
+function getFlags() {
+  const flags = { flags: 'a' };
+  let first = true;
+
+  return () => {
+    if (first) {
+      first = false;
+      return null;
+    } else {
+      return flags;
+    }
+  };
+};
+
 if (__filename === process.argv[1]) {
   run()
 }
 
-module.exports = run;
+module.exports = {
+  csvToJson,
+  getFilePath,
+  getFlags,
+  getJsonConverter,
+  help,
+  run,
+};
