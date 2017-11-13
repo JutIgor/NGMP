@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --exec babel-node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start-server": "nodemon --exec babel-node http-servers/html-server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -30,9 +29,6 @@
     "body-parser": "^1.18.2",
     "cookie": "^0.3.1",
     "express": "^4.16.2",
-    "nomnom": "^1.8.1",
-    "request": "^2.83.0",
-    "split": "^1.0.1",
-    "through2": "^2.0.3"
+    "jsonwebtoken": "^8.1.0"
   }
 }
