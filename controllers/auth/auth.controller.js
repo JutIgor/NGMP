@@ -1,13 +1,23 @@
-import AuthService from './auth.service.js';
+import passport from 'passport';
 
-const auth = new AuthService();
+import auth from './auth.service.js';
 
 export const validateSimple = (req, res, next) => {
   const { body: { login, password } } = req;
 
-  const token = auth.validateSimple(login, password);
+  const isAuthenticated = auth.validate(login, password);
 
-  return token
-    ? res.status(200).json({ token })
+  return isAuthenticated
+    ? res.status(200).json({ token: auth.getToken(login) })
     : res.status(401).send('Invalid login or password');
+};
+
+export const passportAuth = (strategy) => (req, res, next) => {
+  passport.authenticate(strategy, { session: false }, (error, user, info) => {
+    const err = error || info.error;
+
+    if (err) return res.status(401).json(err);
+
+    return res.status(200).json({ token: auth.getToken(user) });
+  })(req, res);
 };

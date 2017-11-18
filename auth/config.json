@@ -1,0 +1,19 @@
+{
+  "local": {
+    "usernameField": "login",
+    "passwordField": "password"
+  },
+  "vk": {
+    "clientID": "6264855",
+    "clientSecret": "gWVrnUqwwQhp5gaE43DC",
+    "callbackURL": "http://localhost:8080/api/auth/vk/callback"
+  },
+  "google": {
+    "clientID": "447407282334-t10lse236kgslg3vj9mskhsubf2v1oj0.apps.googleusercontent.com",
+    "clientSecret": "SaABRZZjl8tbPoBBikjAXwLh",
+    "callbackURL": "http://localhost:8080/api/auth/google/callback"
+  },
+  "twitter": {
+    "callbackURL": "http://localhost:8080/api/auth/twitter/callback"
+  }
+}

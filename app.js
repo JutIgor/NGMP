@@ -4,6 +4,8 @@ import bodyParser from 'body-parser';
 import queryParser from './middlewares/queryParser';
 import cookieParser from './middlewares/cookieParser';
 
+import './auth';
+
 const app = express();
 
 app.use(bodyParser.json());
