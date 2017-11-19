@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { secretKey } from '../controllers/auth/mock';
+import { secretKey } from '../controllers/auth/config';
 
 const jwtVerifier = (req, res, next) => {
   const { token } = req.headers;

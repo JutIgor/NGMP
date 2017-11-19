@@ -1,40 +1,32 @@
-import ProductsService from './products.service.js';
-
-const products = new ProductsService();
+import * as products from './products.service.js';
 
 export const getProducts = (req, res, next) => {
-  return res.json(products.getProducts());
+  return products.getProducts()
+    .then(data => res.json(data))
+    .catch(() => res.status(404).end());
 };
 
 export const getProductById = (req, res, next) => {
   const { params: { id } } = req;
 
-  const product = products.getProductById(id);
-
-  if (product) return res.json(product);
-
-  return res.status(404).end();
+  return products.getProductById(id)
+    .then(data => res.json(data))
+    .catch(() => res.status(404).end());
 }
 
 export const getProductReviewsById = (req, res, next) => {
   const { params: { id } } = req;
 
-  const product = products.getProductReviewsById(id);
-
-  if (product) return res.json(product);
-
-  return res.status(404).end();
+  return products.getProductReviewsById(id)
+    .then(data => res.json(data))
+    .catch(() => res.status(404).end());
 }
 
 export const createProduct = (req, res, next) => {
-  const { body: { reviews } } = req;
+  const { body: { name, reviews } } = req;
 
-  if (!reviews) return res.status(500).end();
-
-  const newProduct = products.addProduct(reviews);
-
-  return res.json(newProduct);
-
-  res.end();
+  return products.createProduct(name, reviews)
+    .then(data => res.json(data))
+    .catch(() => res.status(422).end());
 };
 

@@ -8,10 +8,11 @@ import auth from '../controllers/auth/auth.service';
 passport.use(new Strategy(
   config,
   (login, password, cb) => {
-    const token = auth.validate(login, password);
+    return auth.validate(login, password)
+      .then(isAuthenticated => {
+        if (isAuthenticated) return cb(null, login);
 
-    if (token) return cb(null, token);
-
-    return cb(null, false, { error: 'Invalid login or password' });
+        cb(null, false, { error: 'Invalid login or password' });
+      });
   }
 ));

@@ -1,25 +1,15 @@
-import products from './mock';
+import { products } from '../../models';
 
-export default class ProductsService {
-  constructor() {
-    this.products = products;
-    this.id = 2; // id for new products
-  }
+export const getProducts = () => products.findAll({});
 
-  getProducts = () => this.products;
+export const getProductById = (id) => products.find({ where: { id: id } });
 
-  getProductById = (id) => this.products[id];
+export const getProductReviewsById = (id) => products.find({
+  attributes: ['reviews'],
+  where: { id: id },
+});
 
-  getProductReviewsById = (id) => {
-    const product = this.getProductById(id);
-
-    return product && product.reviews;
-  }
-
-  addProduct = (reviews) => {
-    this.products[++this.id] = { reviews };
-
-    return this.products[this.id];
-  }
+export const createProduct = (name, reviews) => {
+  return products.create({ name, reviews });
 }
 
