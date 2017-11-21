@@ -1,9 +1,0 @@
-{
-  "secretKey": "secret",
-  "users": [
-    {
-      "login": "user",
-      "password": "user"
-    }
-  ]
-}
