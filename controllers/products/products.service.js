@@ -1,15 +1,14 @@
 import { products } from '../../models';
 
-export const getProducts = () => products.findAll({});
+class ProductsService {
+  getProducts = () => products.find({});
 
-export const getProductById = (id) => products.find({ where: { id: id } });
+  getProductById = (id) => products.findById(id);
 
-export const getProductReviewsById = (id) => products.find({
-  attributes: ['reviews'],
-  where: { id: id },
-});
+  getProductReviewsById = (id) => this.getProductById(id).select('reviews');
 
-export const createProduct = (name, reviews) => {
-  return products.create({ name, reviews });
+  createProduct = (name, reviews) => products.create({ name, reviews });
 }
+
+export default new ProductsService();
 
