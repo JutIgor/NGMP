@@ -1,14 +1,10 @@
-'use strict';
-module.exports = (sequelize, DataTypes) => {
-  var products = sequelize.define('products', {
-    name: DataTypes.STRING,
-    reviews: DataTypes.STRING
-  }, {
-    classMethods: {
-      associate: function(models) {
-        // associations can be defined here
-      }
-    }
-  });
-  return products;
-};
+import mongoose from 'mongoose';
+
+const productSchema = mongoose.Schema({
+  name: String,
+  reviews: Array,
+});
+
+const products = mongoose.model('products', productSchema);
+
+export default products;

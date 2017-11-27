@@ -5,9 +5,7 @@ import { secretKey } from './config';
 import { users } from '../../models';
 
 class AuthService {
-  getUserByLogin = (login) => users.find({
-    where: { login: login },
-  });
+  getUserByLogin = (login) => users.findOne({ login: login });
 
   getToken = (login) => jwt.sign({ login }, secretKey, { expiresIn: '1h' });
 

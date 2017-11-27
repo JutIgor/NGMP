@@ -1,7 +1,7 @@
-import * as products from './products.service.js';
+import Products from './products.service.js';
 
 export const getProducts = (req, res, next) => {
-  return products.getProducts()
+  return Products.getProducts()
     .then(data => res.json(data))
     .catch(() => res.status(404).end());
 };
@@ -9,7 +9,7 @@ export const getProducts = (req, res, next) => {
 export const getProductById = (req, res, next) => {
   const { params: { id } } = req;
 
-  return products.getProductById(id)
+  return Products.getProductById(id)
     .then(data => res.json(data))
     .catch(() => res.status(404).end());
 }
@@ -17,7 +17,7 @@ export const getProductById = (req, res, next) => {
 export const getProductReviewsById = (req, res, next) => {
   const { params: { id } } = req;
 
-  return products.getProductReviewsById(id)
+  return Products.getProductReviewsById(id)
     .then(data => res.json(data))
     .catch(() => res.status(404).end());
 }
@@ -25,7 +25,7 @@ export const getProductReviewsById = (req, res, next) => {
 export const createProduct = (req, res, next) => {
   const { body: { name, reviews } } = req;
 
-  return products.createProduct(name, reviews)
+  return Products.createProduct(name, reviews)
     .then(data => res.json(data))
     .catch(() => res.status(422).end());
 };

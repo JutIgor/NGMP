@@ -1,12 +1,16 @@
+import mongoose from 'mongoose';
+
+import { connectionString, defaultPort } from './config/config.json';
+
 import app from './app';
-import db from './models';
+import seed from './seed';
 
-const port = process.env.port || 8080;
+const port = process.env.port || defaultPort;
+const listen = () => app.listen(port, () => console.log(`App listening on port ${port}!`));
 
-db.sequelize.sync()
-  .then(() => {
-    app.listen(port, () => console.log(`App listening on port ${port}!`))
-  })
-  .catch(err => console.info(err));
+mongoose.connect(connectionString);
 
-    // app.listen(port, () => console.log(`App listening on port ${port}!`))
+const db = mongoose.connection;
+
+db.on('error', () => console.log('connection error'));
+db.once('open', () => seed().then(listen));
