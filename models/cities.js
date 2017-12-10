@@ -16,7 +16,7 @@ const citySchema = mongoose.Schema({
     required: true,
     validate: {
       validator: firstLetterCaseValidator,
-      message: '{VALUE} is not a valid city name!'
+      message: '{VALUE} is not a valid country name!'
     },
   },
   capital: {
