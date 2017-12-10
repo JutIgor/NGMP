@@ -1,5 +1,4 @@
 import passport from 'passport';
-import { isObjectEmpty } from '../../utils';
 
 import auth from './auth.service.js';
 
@@ -16,7 +15,7 @@ export const validateSimple = (req, res, next) => {
 
 export const passportAuth = (strategy) => (req, res, next) => {
   passport.authenticate(strategy, { session: false }, (error, user, info) => {
-    const err = error || !isObjectEmpty(info) && info;
+    const err = error || info;
 
     if (err) return res.status(401).json(err);
 
