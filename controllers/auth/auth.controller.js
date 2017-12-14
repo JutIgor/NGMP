@@ -15,7 +15,7 @@ export const validateSimple = (req, res, next) => {
 
 export const passportAuth = (strategy) => (req, res, next) => {
   passport.authenticate(strategy, { session: false }, (error, user, info) => {
-    const err = error || info && info.error;
+    const err = error || info;
 
     if (err) return res.status(401).json(err);
 

@@ -1,0 +1,298 @@
+swagger: '2.0'
+info:
+  description: This is NGMP swagger
+  version: 1.0.0
+  title: NGMP
+# basePath: /v2
+tags:
+- name: users
+  description: Users api
+- name: products
+  description: Products api
+- name: cities
+  description: Cities api
+- name: auth
+  description: Auth api
+# schemes:
+# - http
+paths:
+  /api/auth:
+    post:
+      tags:
+      - auth
+      summary: Local auth
+      operationId: localAuth
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: user
+        description: User credentials
+        schema:
+          type: object
+          properties:
+            login: 
+              type: string
+            password:
+              type: string
+          
+      responses:
+        200:
+          description: OK
+        401:
+          description: Invalid login or password
+  /api/users:
+    get:
+      tags:
+      - users
+      summary: Returns all users
+      operationId: getUsers
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized
+        404:
+          description: Not found
+      security:
+      - ngmp_auth: []
+  /api/products:
+    get:
+      tags:
+      - products
+      summary: Returns all products
+      operationId: getProducts
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized
+        404:
+          description: Not found
+      security:
+      - ngmp_auth: []
+    post:
+      tags:
+      - products
+      summary: Creates new product
+      operationId: createProduct
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: product
+        description: The product to create
+        schema:
+          type: object
+          required:
+            - name
+            - reviews
+          properties:
+            name:
+              type: string
+            reviews:
+              type: array
+              items: 
+                type: string
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized
+        404:
+          description: Not found
+      security:
+      - ngmp_auth: []
+  /api/products/{productId}:
+    get:
+      tags:
+      - products
+      summary: Find product by ID
+      description: Returns a single product with requested ID
+      operationId: getProductById
+      produces:
+      - application/json
+      parameters:
+      - name: productId
+        in: path
+        description: ID of product to return
+        required: true
+        type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Product'
+        401:
+          description: Unauthorized
+        404:
+          description: Not found
+      security:
+      - ngmp_auth: []
+  /api/products/{productId}/reviews:
+    get:
+      tags:
+      - products
+      summary: Find product's reviews by product ID
+      description: Returns a reviews of single product with requested ID
+      operationId: getProductReviewsById
+      produces:
+      - application/json
+      parameters:
+      - name: productId
+        in: path
+        description: ID of product to return
+        required: true
+        type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              type: string
+        401:
+          description: Unauthorized
+        404:
+          description: Not found
+      security:
+      - ngmp_auth: []
+  /api/cities:
+    get:
+      tags:
+      - cities
+      summary: Returns all cities
+      description: Returns all cities
+      operationId: getCities
+      produces:
+      - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/City'
+        401:
+          description: Unauthorized
+        404:
+          description: Not found
+      security:
+      - ngmp_auth: []
+  /api/cities/random:
+    get:
+      tags:
+      - cities
+      summary: Returns random city
+      description: Returns random city
+      operationId: getRandomCity
+      produces:
+      - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/City'
+        401:
+          description: Unauthorized
+        404:
+          description: Not found
+      security:
+      - ngmp_auth: []
+  /api/cities/randomManually:
+    get:
+      tags:
+      - cities
+      summary: Returns random city using different logic
+      description: Returns random city using different logic
+      operationId: getRandomCityManually
+      produces:
+      - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/City'
+        401:
+          description: Unauthorized
+        404:
+          description: Not found
+      security:
+      - ngmp_auth: []
+  /api/cities/create:
+    post:
+      tags:
+      - cities
+      summary: Creates new city
+      description: Creates new city
+      operationId: createCity
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: city
+        description: The city to create
+        schema:
+          $ref: '#/definitions/City'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/City'
+        401:
+          description: Unauthorized
+        404:
+          description: Not found
+      security:
+      - ngmp_auth: []
+securityDefinitions:
+  ngmp_auth:
+    type: apiKey
+    in: header
+    name: token
+definitions:
+  Product:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      reviews:
+        type: array
+        items:
+          type: string
+  City:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      country:
+        type: string
+      capital: 
+        type: boolean
+      location:
+        type: object
+        properties:
+          lat:
+            type: number
+            format: float
+          long:
+            type: number
+            format: float
+schemes:
+ - http
+host: localhost:8080
+basePath: /
